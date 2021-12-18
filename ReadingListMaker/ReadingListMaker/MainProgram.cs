@@ -103,7 +103,13 @@ namespace ReadingListMaker
 
         static void BookSearchMenu()
         {
+            Console.Clear();
 
+            Console.WriteLine();
+            Console.WriteLine("   Please enter a book title:");
+            Console.WriteLine();
+            Console.Write("   ");
+            var searchQuery = Console.ReadLine();
         }
     }
 }
