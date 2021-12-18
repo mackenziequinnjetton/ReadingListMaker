@@ -113,35 +113,76 @@ namespace ReadingListMaker
             Console.WriteLine();
             Console.Write("   ");
 
-            var searchQuery = Console.ReadLine();
-            await BookSearch(searchQuery);
+            var searchQuery = Console.ReadLine().Trim().ToLower();
+            var searchResult = await BookSearch(searchQuery);
         }
 
-        static async Task<string[]> BookSearch(string searchQuery)
+        static async Task<List<string>> BookSearch(string searchQuery)
         {
-            Task<string[]> bookTitleQuery = Task.Run(
+            Task<List<string>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
             await bookTitleQuery;
             return bookTitleQuery.Result;
         }
 
-        static string[] BookSearchHelper(string searchQuery)
+        static List<string> BookSearchHelper(string searchQuery)
         {
             var apiPath = 
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
 
             string apiKey;
 
-            using (FileStream apiFileStream = File.Open(apiPath, FileMode.Open))
+            StreamReader apiReader;
+
+            using (FileStream apiFileStream = 
+                File.Open(apiPath, FileMode.Open))
             {
-                StreamReader apiReader = new StreamReader(apiFileStream);
-
+                apiReader = new StreamReader(apiFileStream);
                 apiKey = apiReader.ReadToEnd();
+            }
+            var searchQueryWords = searchQuery.Split(' ');
 
-                apiReader.Close();
+            var apiURL = "https://www.googleapis.com/books/v1/volumes?q=";
+
+            foreach (var word in searchQueryWords)
+            {
+                apiURL += $"{word}+";
             }
 
-            Console.WriteLine(apiKey);
+            apiURL = apiURL.Substring(0, apiURL.Length - 1);
+
+            apiURL += $"&key={apiKey}";
+
+            WebRequest apiRequest = WebRequest.Create(apiURL);
+            Stream apiStream = apiRequest.GetResponse().GetResponseStream();
+            apiReader = new StreamReader(apiStream);
+            var result = new List<string>();
+
+            while (!apiReader.EndOfStream)
+            {
+                var line = apiReader.ReadLine();
+                Console.WriteLine(line);
+                result.Add(line);
+            }
+
+            apiRequest.Abort();
+            apiStream.Close();
+            apiReader.Close();
+
+            return result;
+
+            /*try
+            {
+                
+            }
+            catch 
+            {
+
+            }
+            finally
+            {
+                
+            }*/
         }
     }
 }
