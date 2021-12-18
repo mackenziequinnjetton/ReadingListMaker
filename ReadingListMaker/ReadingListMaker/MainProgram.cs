@@ -17,10 +17,11 @@ namespace ReadingListMaker
         static void IntroText()
         {
             Console.WriteLine();
-            Console.WriteLine("   Welcome! This program searches for " +
+            Console.WriteLine($"   Welcome! This program searches for " +
                 "books and creates a reading list.");
             Console.WriteLine();
-            Console.WriteLine("   Please select one of the following options:");
+            Console.WriteLine("   Please select one of the " +
+                "following options:");
             Console.WriteLine();
         }
 
@@ -41,7 +42,8 @@ namespace ReadingListMaker
                 var response = Console.ReadLine();
 
                 // Checks if the user selected a valid menu item
-                if (new List<string> { "1", "2", "3" }.Contains(response.Trim()))
+                if (new List<string> { "1", "2", "3" }
+                    .Contains(response.Trim()))
                 {
                     return response;
                 }
@@ -49,7 +51,8 @@ namespace ReadingListMaker
                 {
                     Console.WriteLine();
                     Console.WriteLine("   We didn't understand your entry. " +
-                        "Please enter the number you wish to select:");
+                        "Please enter the number of the option " +
+                        "you wish to select:");
                     Console.WriteLine();
                 }
             }
