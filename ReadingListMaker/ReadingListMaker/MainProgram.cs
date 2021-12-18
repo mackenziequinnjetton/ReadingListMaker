@@ -8,6 +8,8 @@ namespace ReadingListMaker
         static void Main(string[] args)
         {
             IntroText();
+            var response = MainMenu();
+            ParseUserChoice(response, "MainMenu");
         }
 
         static void IntroText()
@@ -39,6 +41,10 @@ namespace ReadingListMaker
                     Console.WriteLine();
                 }
             }
+        }
+        static string ParseUserChoice(string response, string menu)
+        {
+
         }
     }
 }
