@@ -5,6 +5,7 @@ using Google.Apis.Books;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ReadingListMaker
 {
@@ -120,15 +121,16 @@ namespace ReadingListMaker
             var searchQuery = Console.ReadLine().Trim().ToLower();
             Console.Clear();
             var searchResult = await BookSearch(searchQuery);
-            foreach (var book in searchResult)
+            /*foreach (var book in searchResult)
             {
                 Console.WriteLine($"{book}");
             }
+            */
         }
 
-        static async Task<List<string>> BookSearch(string searchQuery)
+        static async Task<object> BookSearch(string searchQuery)
         {
-            Task<List<string>> bookTitleQuery = Task.Run(
+            Task<object> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
 
             Console.WriteLine();
@@ -139,7 +141,7 @@ namespace ReadingListMaker
             return bookTitleQuery.Result;
         }
 
-        static List<string> BookSearchHelper(string searchQuery)
+        static object BookSearchHelper(string searchQuery)
         {
             var apiPath = 
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
@@ -170,13 +172,17 @@ namespace ReadingListMaker
             WebRequest apiRequest = WebRequest.Create(apiURL);
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
             apiReader = new StreamReader(apiStream);
-            var result = new List<string>();
+            var result = JsonConvert.DeserializeObject<string>(apiReader.ReadToEnd());
+            JObject resultObject = JObject.Parse(result);
+            Console.WriteLine(resultObject);
+            
+            /*var result = new List<string>();
             
             while (!apiReader.EndOfStream)
             {
                 var line = apiReader.ReadLine();
                 result.Add(line);
-            }
+            }*/
 
             apiRequest.Abort();
             apiStream.Close();
