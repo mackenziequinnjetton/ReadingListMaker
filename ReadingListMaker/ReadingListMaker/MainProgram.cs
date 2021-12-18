@@ -69,7 +69,14 @@ namespace ReadingListMaker
                     switch (response)
                     {
                         case "1":
-
+                            // Book search function here
+                            break;
+                        case "2":
+                            // Reading list display function here
+                            break;
+                        case "3":
+                            // Quit function here
+                            break;
                     }
                     break;
             }
