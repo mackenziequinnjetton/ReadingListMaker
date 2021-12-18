@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Google.Apis.Books;
+using System.IO;
 
 namespace ReadingListMaker
 {
@@ -115,12 +116,26 @@ namespace ReadingListMaker
 
         static async Task<string[]> BookSearch(string searchQuery)
         {
-            Task<string[]> bookTitleQuery = Task.Run(
+            Task<byte[]> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
+            await bookTitleQuery;
         }
 
-        static string[] BookSearchHelper(string searchQuery)
+        static async Task<byte[]> BookSearchHelper(string searchQuery)
         {
+            var apiPath = 
+                @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
+
+            byte[] apiKey;
+
+            using (FileStream apiFileStream = File.Open(apiPath, FileMode.Open))
+            {
+                apiKey = new byte[apiFileStream.Length];
+
+                // apiFileStream.Seek(0, SeekOrigin.Begin);
+                await apiFileStream.ReadAsync(apiKey);
+            }
+
             
         }
     }
