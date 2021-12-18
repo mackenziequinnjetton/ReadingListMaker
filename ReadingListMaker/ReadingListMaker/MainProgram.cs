@@ -90,7 +90,7 @@ namespace ReadingListMaker
                     switch (response)
                     {
                         case "1":
-                            // Book search function here
+                            BookSearchMenu();
                             break;
                         case "2":
                             // Reading list display function here
@@ -103,7 +103,7 @@ namespace ReadingListMaker
             }
         }
 
-        static void BookSearchMenu()
+        static async void BookSearchMenu()
         {
             Console.Clear();
 
@@ -111,32 +111,36 @@ namespace ReadingListMaker
             Console.WriteLine("   Please enter a book title:");
             Console.WriteLine();
             Console.Write("   ");
+
             var searchQuery = Console.ReadLine();
+            await BookSearch(searchQuery);
         }
 
         static async Task<string[]> BookSearch(string searchQuery)
         {
-            Task<byte[]> bookTitleQuery = Task.Run(
+            Task<string[]> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
             await bookTitleQuery;
+            return bookTitleQuery.Result;
         }
 
-        static async Task<byte[]> BookSearchHelper(string searchQuery)
+        static string[] BookSearchHelper(string searchQuery)
         {
             var apiPath = 
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
 
-            byte[] apiKey;
+            string apiKey;
 
             using (FileStream apiFileStream = File.Open(apiPath, FileMode.Open))
             {
-                apiKey = new byte[apiFileStream.Length];
+                StreamReader apiReader = new StreamReader(apiFileStream);
 
-                // apiFileStream.Seek(0, SeekOrigin.Begin);
-                await apiFileStream.ReadAsync(apiKey);
+                apiKey = apiReader.ReadToEnd();
+
+                apiReader.Close();
             }
 
-            
+            Console.WriteLine(apiKey);
         }
     }
 }
