@@ -11,8 +11,7 @@ namespace ReadingListMaker
         static void Main(string[] args)
         {
             IntroText();
-            var response = MainMenu();
-            ParseUserChoice(response, "mainMenu");
+            MainMenu();
         }
 
         // Prints an introductory message informing the user of the
@@ -56,7 +55,7 @@ namespace ReadingListMaker
                     // For future calls of MainMenu,
                     // the console will be cleared first
                     MainMenuFirstCall = false;
-                    return response;
+                    ParseUserChoice(response, "mainMenu");
                 }
                 else
                 {
