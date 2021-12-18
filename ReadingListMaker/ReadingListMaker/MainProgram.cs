@@ -33,20 +33,23 @@ namespace ReadingListMaker
 
         // Prints a main menu, asks the user to select a choice,
         // and checks if their choice is one of the menu options
-        static string MainMenu()
+        static void MainMenu()
         {
+            Console.WriteLine("   1: Look up a book by title");
+            Console.WriteLine("   2: View your current reading list");
+            Console.WriteLine("   3: Quit");
+            Console.WriteLine();
+
             // If it is not the first call of MainMenu(), clear the console
             if (!MainMenuFirstCall)
             {
                 Console.Clear();
             }
+
             // Loops until the user inputs a valid menu selection
             while (true)
             {
-                Console.WriteLine("   1: Look up a book by title");
-                Console.WriteLine("   2: View your current reading list");
-                Console.WriteLine("   3: Quit");
-                Console.WriteLine();
+                
 
                 // Maintains margin with user prompt
                 Console.Write("   ");
@@ -114,6 +117,7 @@ namespace ReadingListMaker
             Console.Write("   ");
 
             var searchQuery = Console.ReadLine().Trim().ToLower();
+            Console.Clear();
             var searchResult = await BookSearch(searchQuery);
         }
 
@@ -121,6 +125,7 @@ namespace ReadingListMaker
         {
             Task<List<string>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
+            bookTitleQuery.Wait();
             await bookTitleQuery;
             return bookTitleQuery.Result;
         }
@@ -151,17 +156,16 @@ namespace ReadingListMaker
 
             apiURL = apiURL.Substring(0, apiURL.Length - 1);
 
-            apiURL += $"&key={apiKey}";
+            apiURL += $"&projection=lite&maxResults=5&key={apiKey}";
 
             WebRequest apiRequest = WebRequest.Create(apiURL);
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
             apiReader = new StreamReader(apiStream);
             var result = new List<string>();
-
+            
             while (!apiReader.EndOfStream)
             {
                 var line = apiReader.ReadLine();
-                Console.WriteLine(line);
                 result.Add(line);
             }
 
