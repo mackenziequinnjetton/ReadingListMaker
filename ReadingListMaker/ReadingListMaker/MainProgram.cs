@@ -16,10 +16,11 @@ namespace ReadingListMaker
         // program's function and how to enter input
         static void IntroText()
         {
-            Console.WriteLine("Welcome! This program searches for books and " +
-                "creates a reading list.");
             Console.WriteLine();
-            Console.WriteLine("Please enter one of the following:");
+            Console.WriteLine("   Welcome! This program searches for " +
+                "books and creates a reading list.");
+            Console.WriteLine();
+            Console.WriteLine("   Please enter one of the following:");
             Console.WriteLine();
         }
 
@@ -30,11 +31,14 @@ namespace ReadingListMaker
             // Loops until the user inputs a valid menu selection
             while (true)
             {
-                Console.WriteLine("To look up a book by title, enter 1.");
-                Console.WriteLine("To view your current reading list, enter 2.");
-                Console.WriteLine("To quit, enter 3.");
+                Console.WriteLine("   To look up a book by title, enter 1.");
+                Console.WriteLine("   To view your current reading " +
+                    "list, enter 2.");
+                Console.WriteLine("   To quit, enter 3.");
                 Console.WriteLine();
 
+                // Maintains margin with user prompt
+                Console.Write("   ");
                 var response = Console.ReadLine();
 
                 // Checks if the user selected a valid menu item
@@ -44,7 +48,8 @@ namespace ReadingListMaker
                 }
                 else
                 {
-                    Console.WriteLine("We didn't understand your entry, please try again.");
+                    Console.WriteLine("   We didn't understand your entry, " +
+                        "please try again.");
                     Console.WriteLine();
                 }
             }
