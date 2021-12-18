@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ReadingListMaker
 {
-    internal class Program
+    internal class MainProgram
     {
         static void Main(string[] args)
         {
