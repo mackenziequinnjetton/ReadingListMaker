@@ -7,7 +7,7 @@ namespace ReadingListMaker
     {
         static void Main(string[] args)
         {
-            
+            IntroText();
         }
 
         static void IntroText()
@@ -21,18 +21,24 @@ namespace ReadingListMaker
 
         static string MainMenu()
         {
-            Console.WriteLine("To look up a book by title, enter 1.");
-            Console.WriteLine("To view your current reading list, enter 2.");
-            Console.WriteLine("To quit, enter 3.");
-            Console.WriteLine();
-            
-            var response = Console.ReadLine();
-
-            if (new List<string> {"1", "2", "3"}.Contains(response.Trim()))
+            while (true)
             {
-                return response;
+                Console.WriteLine("To look up a book by title, enter 1.");
+                Console.WriteLine("To view your current reading list, enter 2.");
+                Console.WriteLine("To quit, enter 3.");
+                Console.WriteLine();
+
+                var response = Console.ReadLine();
+
+                if (new List<string> { "1", "2", "3" }.Contains(response.Trim()))
+                {
+                    return response;
+                }
+                else {
+                    Console.WriteLine("We didn't understand your entry, please try again.");
+                    Console.WriteLine();
+                }
             }
-            else { }
         }
     }
 }
