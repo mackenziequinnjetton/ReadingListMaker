@@ -112,9 +112,9 @@ namespace ReadingListMaker
             var searchQuery = Console.ReadLine();
         }
 
-        static async Task<string> QueryGoogleBooksAPI(string searchQuery)
+        static async Task<string> BookSearch(string searchQuery)
         {
-
+            Task<string> bookTitleQuery = Task.Run(() => { });
         }
     }
 }
