@@ -9,9 +9,11 @@ namespace ReadingListMaker
         {
             IntroText();
             var response = MainMenu();
-            ParseUserChoice(response, "MainMenu");
+            ParseUserChoice(response, "mainMenu");
         }
 
+        // Prints an introductory message informing the user of the
+        // program's function and how to enter input
         static void IntroText()
         {
             Console.WriteLine("Welcome! This program searches for books and " +
@@ -21,8 +23,11 @@ namespace ReadingListMaker
             Console.WriteLine();
         }
 
+        // Prints a main menu, asks the user to select a choice,
+        // and checks if their choice is one of the menu options
         static string MainMenu()
         {
+            // Loops until the user inputs a valid menu selection
             while (true)
             {
                 Console.WriteLine("To look up a book by title, enter 1.");
@@ -36,15 +41,27 @@ namespace ReadingListMaker
                 {
                     return response;
                 }
-                else {
+                else
+                {
                     Console.WriteLine("We didn't understand your entry, please try again.");
                     Console.WriteLine();
                 }
             }
         }
-        static string ParseUserChoice(string response, string menu)
-        {
 
+
+        static void ParseUserChoice(string response, string menu)
+        {
+            switch (menu)
+            {
+                case "mainMenu":
+                    switch (response)
+                    {
+                        case "1":
+
+                    }
+                    break;
+            }
         }
     }
 }
