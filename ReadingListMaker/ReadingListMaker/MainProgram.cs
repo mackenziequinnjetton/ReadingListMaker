@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReadingListMaker
 {
@@ -109,6 +110,11 @@ namespace ReadingListMaker
             Console.WriteLine();
             Console.Write("   ");
             var searchQuery = Console.ReadLine();
+        }
+
+        static async Task<string> QueryGoogleBooksAPI(string searchQuery)
+        {
+
         }
     }
 }
