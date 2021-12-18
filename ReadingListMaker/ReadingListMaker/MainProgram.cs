@@ -5,6 +5,9 @@ namespace ReadingListMaker
 {
     internal class MainProgram
     {
+        // Indicates whether it is the first time MainMenu() has been called
+        private static bool MainMenuFirstCall { get; set; } = true;
+
         static void Main(string[] args)
         {
             IntroText();
@@ -29,6 +32,11 @@ namespace ReadingListMaker
         // and checks if their choice is one of the menu options
         static string MainMenu()
         {
+            // If it is not the first call of MainMenu(), clear the console
+            if (!MainMenuFirstCall)
+            {
+                Console.Clear();
+            }
             // Loops until the user inputs a valid menu selection
             while (true)
             {
@@ -45,6 +53,9 @@ namespace ReadingListMaker
                 if (new List<string> { "1", "2", "3" }
                     .Contains(response.Trim()))
                 {
+                    // For future calls of MainMenu,
+                    // the console will be cleared first
+                    MainMenuFirstCall = false;
                     return response;
                 }
                 else
