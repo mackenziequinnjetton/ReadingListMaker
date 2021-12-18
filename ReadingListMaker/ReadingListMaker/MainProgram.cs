@@ -37,6 +37,7 @@ namespace ReadingListMaker
 
                 var response = Console.ReadLine();
 
+                // Checks if the user selected a valid menu item
                 if (new List<string> { "1", "2", "3" }.Contains(response.Trim()))
                 {
                     return response;
@@ -49,12 +50,22 @@ namespace ReadingListMaker
             }
         }
 
-
+        // Parses user menu input from anywhere in the program
+        // and calls the appropriate function
         static void ParseUserChoice(string response, string menu)
         {
+            // Note that before this function is called, user input
+            // will already have been validated by the calling function
+
+            // Outer switch function checks which menu the user's 
+            // input is from
             switch (menu)
             {
                 case "mainMenu":
+                    
+                    // Inner switch function checks which choice from that
+                    // menu the user selected and calls the
+                    // appropriate function
                     switch (response)
                     {
                         case "1":
