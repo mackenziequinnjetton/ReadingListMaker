@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Google.Apis.Books;
 using System.IO;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace ReadingListMaker
 {
@@ -119,12 +120,20 @@ namespace ReadingListMaker
             var searchQuery = Console.ReadLine().Trim().ToLower();
             Console.Clear();
             var searchResult = await BookSearch(searchQuery);
+            foreach (var book in searchResult)
+            {
+                Console.WriteLine($"{book}");
+            }
         }
 
         static async Task<List<string>> BookSearch(string searchQuery)
         {
             Task<List<string>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
+
+            Console.WriteLine();
+            Console.Write("   ");
+
             bookTitleQuery.Wait();
             await bookTitleQuery;
             return bookTitleQuery.Result;
