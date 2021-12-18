@@ -89,5 +89,10 @@ namespace ReadingListMaker
                     break;
             }
         }
+
+        static void BookSearchMenu()
+        {
+
+        }
     }
 }
