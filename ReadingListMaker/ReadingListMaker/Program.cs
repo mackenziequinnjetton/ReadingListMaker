@@ -6,6 +6,11 @@ namespace ReadingListMaker
     {
         static void Main(string[] args)
         {
+            
+        }
+
+        static string MainMenu()
+        {
             Console.WriteLine("Welcome! This program searches for books and " +
                 "creates a reading list.");
             Console.WriteLine();
