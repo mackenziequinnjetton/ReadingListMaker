@@ -113,9 +113,15 @@ namespace ReadingListMaker
             var searchQuery = Console.ReadLine();
         }
 
-        static async Task<string> BookSearch(string searchQuery)
+        static async Task<string[]> BookSearch(string searchQuery)
         {
-            Task<string> bookTitleQuery = Task.Run(() => { });
+            Task<string[]> bookTitleQuery = Task.Run(
+                () => BookSearchHelper(searchQuery));
+        }
+
+        static string[] BookSearchHelper(string searchQuery)
+        {
+            
         }
     }
 }
