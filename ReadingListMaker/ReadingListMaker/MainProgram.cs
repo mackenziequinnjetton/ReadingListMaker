@@ -34,23 +34,23 @@ namespace ReadingListMaker
             Console.WriteLine();
             Console.WriteLine("   Please select one of the " +
                 "following options:");
-            Console.WriteLine();
         }
 
         // Prints a main menu, asks the user to select a choice,
         // and checks if their choice is one of the menu options
         static void MainMenu()
         {
-            Console.WriteLine("   1: Look up a book by title");
-            Console.WriteLine("   2: View your current reading list");
-            Console.WriteLine("   3: Quit");
-            Console.WriteLine();
-
             // If it is not the first call of MainMenu(), clear the console
             if (!MainMenuFirstCall)
             {
                 Console.Clear();
             }
+
+            Console.WriteLine();
+            Console.WriteLine("   1: Look up a book by title");
+            Console.WriteLine("   2: View your current reading list");
+            Console.WriteLine("   3: Quit");
+            Console.WriteLine();
 
             // Loops until the user inputs a valid menu selection
             string response;
@@ -286,5 +286,7 @@ namespace ReadingListMaker
 
             return resultCollection;
         }
+
+
     }
 }
