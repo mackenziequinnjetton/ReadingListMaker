@@ -112,7 +112,7 @@ namespace ReadingListMaker
             }
         }
 
-        static async void BookSearchMenu()
+        static void BookSearchMenu()
         {
             Console.Clear();
 
