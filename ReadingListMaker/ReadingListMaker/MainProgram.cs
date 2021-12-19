@@ -17,6 +17,7 @@ namespace ReadingListMaker
         private static bool MainMenuFirstCall { get; set; } = true;
         private static bool APIResponsePending { get; set; } = true;
         private static Book SelectedBook { get; set; }
+        private static List<Book> ReadingList { get; set; }
 
         static void Main(string[] args)
         {
@@ -289,7 +290,24 @@ namespace ReadingListMaker
 
         static void AddToReadingList(Book SelectedBook)
         { 
-            
+            ReadingList.Add(SelectedBook);
+        }
+
+        static void ViewReadingList()
+        {
+            foreach (var item in ReadingList)
+            {
+                Console.WriteLine($"   Title:      {item.Title}");
+                foreach (var author in item.Authors)
+                {
+                    Console.WriteLine($"   Author:     {author}");
+                }
+                Console.WriteLine($"   Publisher:  {item.Publisher}");
+                Console.WriteLine();
+            }
+            Console.WriteLine("Press any key to return to the main menu:");
+            Console.ReadLine();
+            MainMenu();
         }
     }
 }
