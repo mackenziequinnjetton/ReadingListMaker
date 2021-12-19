@@ -54,7 +54,6 @@ namespace ReadingListMaker
             // Loops until the user inputs a valid menu selection
             while (true)
             {
-                
 
                 // Maintains margin with user prompt
                 Console.Write("   ");
@@ -64,6 +63,7 @@ namespace ReadingListMaker
                 if (new List<string> { "1", "2", "3" }
                     .Contains(response.Trim()))
                 {
+
                     // For future calls of MainMenu,
                     // the console will be cleared first
                     MainMenuFirstCall = false;
@@ -84,6 +84,7 @@ namespace ReadingListMaker
         // and calls the appropriate function
         static void ParseUserChoice(string response, string menu)
         {
+
             // Note that before this function is called, user input
             // will already have been validated by the calling function
 
@@ -127,6 +128,7 @@ namespace ReadingListMaker
             
             Console.Clear();
             Console.WriteLine();
+
             foreach (var item in SearchResult)
             {
                 Console.WriteLine($"   {item.Title}");
@@ -149,6 +151,7 @@ namespace ReadingListMaker
 
             bookTitleQuery.Wait();
             await bookTitleQuery;
+
             SearchResult = bookTitleQuery.Result;
         }
 
@@ -158,7 +161,6 @@ namespace ReadingListMaker
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
 
             string apiKey;
-
             StreamReader apiReader;
 
             using (FileStream apiFileStream = 
@@ -167,6 +169,7 @@ namespace ReadingListMaker
                 apiReader = new StreamReader(apiFileStream);
                 apiKey = apiReader.ReadToEnd();
             }
+
             var searchQueryWords = searchQuery.Split(' ');
 
             var apiURL = "https://www.googleapis.com/books/v1/volumes?q=";
