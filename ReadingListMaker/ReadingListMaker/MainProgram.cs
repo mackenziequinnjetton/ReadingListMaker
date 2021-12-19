@@ -15,6 +15,7 @@ namespace ReadingListMaker
     {
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
+        private static IEnumerable<Book> SearchResult { get; set; }
 
         static void Main(string[] args)
         {
@@ -122,7 +123,7 @@ namespace ReadingListMaker
 
             var searchQuery = Console.ReadLine().Trim().ToLower();
             Console.Clear();
-            var searchResult = await BookSearch(searchQuery);
+            BookSearch(searchQuery);
             /*foreach (var book in searchResult)
             {
                 Console.WriteLine($"{book}");
@@ -130,7 +131,7 @@ namespace ReadingListMaker
             */
         }
 
-        static async IEnumerable<Book> BookSearch(string searchQuery)
+        static async void BookSearch(string searchQuery)
         {
             Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
@@ -140,7 +141,7 @@ namespace ReadingListMaker
 
             bookTitleQuery.Wait();
             await bookTitleQuery;
-            return bookTitleQuery.Result;
+            SearchResult = bookTitleQuery.Result;
         }
 
         static IEnumerable<Book> BookSearchHelper(string searchQuery)
@@ -186,12 +187,6 @@ namespace ReadingListMaker
                     bookInfo["authors"], 
                     bookInfo["publisher"]
                 );
-                /*select new 
-                { 
-                    Title = bookInfo["title"],
-                    Authors = bookInfo["authors"], 
-                    Publisher = bookInfo["publisher"] 
-                };*/
 
             Console.Clear();
             foreach (var item in resultCollection)
