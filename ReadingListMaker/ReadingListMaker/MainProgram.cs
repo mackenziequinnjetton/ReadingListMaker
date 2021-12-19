@@ -124,11 +124,19 @@ namespace ReadingListMaker
             var searchQuery = Console.ReadLine().Trim().ToLower();
             Console.Clear();
             BookSearch(searchQuery);
-            /*foreach (var book in searchResult)
+            
+            Console.Clear();
+            Console.WriteLine();
+            foreach (var item in SearchResult)
             {
-                Console.WriteLine($"{book}");
+                Console.WriteLine($"   {item.Title}");
+                foreach (var author in item.Authors)
+                {
+                    Console.WriteLine($"   {author}");
+                }
+                Console.WriteLine($"   {item.Publisher}");
+                Console.WriteLine();
             }
-            */
         }
 
         static async void BookSearch(string searchQuery)
@@ -187,18 +195,6 @@ namespace ReadingListMaker
                     bookInfo["authors"], 
                     bookInfo["publisher"]
                 );
-
-            Console.Clear();
-            foreach (var item in resultCollection)
-            {
-                Console.WriteLine($"   {item.Title}");
-                foreach (var author in item.Authors)
-                {
-                    Console.WriteLine($"   {author}");
-                }
-                Console.WriteLine($"   {item.Publisher}");
-                Console.WriteLine();
-            }
 
             apiRequest.Abort();
             apiStream.Dispose();
