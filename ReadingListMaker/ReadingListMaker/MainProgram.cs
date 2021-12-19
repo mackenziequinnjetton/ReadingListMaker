@@ -184,8 +184,11 @@ namespace ReadingListMaker
             apiURL += $"&maxResults=5&key={apiKey}";
 
             WebRequest apiRequest = WebRequest.Create(apiURL);
+
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
+
             apiReader = new StreamReader(apiStream);
+
             var result = apiReader.ReadToEnd().Trim();
             JObject resultObject = JObject.Parse(result);
 
