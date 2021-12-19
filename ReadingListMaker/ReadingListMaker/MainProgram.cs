@@ -15,8 +15,8 @@ namespace ReadingListMaker
     {
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
-        // private static IEnumerable<Book> SearchResult { get; set; }
         private static bool APIResponsePending { get; set; } = true;
+        private static Book SelectedBook { get; set; }
 
         static void Main(string[] args)
         {
@@ -179,7 +179,7 @@ namespace ReadingListMaker
             // await bookTitleQuery;
             APIResponsePending = false;
 
-            var searchResult = bookTitleQuery.Result;
+            var searchResult = bookTitleQuery.Result.ToArray();
 
             Console.Clear();
             Console.WriteLine();
@@ -214,7 +214,7 @@ namespace ReadingListMaker
                     if (new List<string> { "1", "2", "3", "4", "5" }
                         .Contains(response))
                     {
-                        
+                        SelectedBook = searchResult[int.Parse(response)];
                         ParseUserChoice(response, "bookSearch");
                         break;
                     }
@@ -287,6 +287,9 @@ namespace ReadingListMaker
             return resultCollection;
         }
 
-
+        static void AddToReadingList(Book SelectedBook)
+        { 
+            
+        }
     }
 }
