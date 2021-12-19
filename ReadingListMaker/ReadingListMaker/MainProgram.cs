@@ -15,7 +15,7 @@ namespace ReadingListMaker
     {
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
-        private static IEnumerable<Book> SearchResult { get; set; }
+        // private static IEnumerable<Book> SearchResult { get; set; }
 
         static void Main(string[] args)
         {
@@ -70,16 +70,12 @@ namespace ReadingListMaker
                     ParseUserChoice(response, "mainMenu");
 
                     if (response == "1")
-                    {
-                        Console.Clear();
-                        Console.WriteLine();
-                        Console.WriteLine("   Searching...");
-                        
+                    {    
                         while (true)
                         {
                             Console.Clear();
                             Console.WriteLine();
-                            Console.Write("   ");
+                            Console.Write("   Searching...");
                             Console.ReadLine();
                         }
                     }
@@ -152,20 +148,34 @@ namespace ReadingListMaker
 
             await bookTitleQuery;
 
-            SearchResult = bookTitleQuery.Result;
+            var searchResult = bookTitleQuery.Result;
 
             Console.Clear();
             Console.WriteLine();
+            Console.WriteLine("   Results:");
+            Console.WriteLine();
 
-            foreach (var item in SearchResult)
+            foreach (var item in searchResult)
             {
-                Console.WriteLine($"   {item.Title}");
+                Console.WriteLine($"   Title:      {item.Title}");
                 foreach (var author in item.Authors)
                 {
-                    Console.WriteLine($"   {author}");
+                    Console.WriteLine($"   Author:     {author}");
                 }
-                Console.WriteLine($"   {item.Publisher}");
+                Console.WriteLine($"   Publisher:  {item.Publisher}");
                 Console.WriteLine();
+            }
+
+            Console.WriteLine("Please select a result to add to reading list");
+            Console.WriteLine("(enter 1-5, or press ESC to return " +
+                "to the main menu): ");
+            Console.WriteLine();
+
+            var responseKey = Console.ReadKey();
+
+            if (responseKey.Key == ConsoleKey.Escape)
+            {
+                MainMenu();
             }
         }
 
@@ -194,11 +204,9 @@ namespace ReadingListMaker
             }
 
             apiURL = apiURL.Substring(0, apiURL.Length - 1);
-
             apiURL += $"&maxResults=5&key={apiKey}";
 
             WebRequest apiRequest = WebRequest.Create(apiURL);
-
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
 
             apiReader = new StreamReader(apiStream);
