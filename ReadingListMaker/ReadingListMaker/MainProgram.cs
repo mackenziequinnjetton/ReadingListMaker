@@ -17,7 +17,7 @@ namespace ReadingListMaker
         private static bool MainMenuFirstCall { get; set; } = true;
         private static bool APIResponsePending { get; set; } = true;
         private static Book SelectedBook { get; set; }
-        private static List<Book> ReadingList { get; set; }
+        private static List<Book> ReadingList { get; set; } = new List<Book>();
 
         static void Main(string[] args)
         {
@@ -292,21 +292,62 @@ namespace ReadingListMaker
         static void AddToReadingList(Book SelectedBook)
         { 
             ReadingList.Add(SelectedBook);
+
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("   Would you like to search for another " +
+                "book? (Enter 1 for yes, 2 for no):");
+            Console.WriteLine();
+            
+            while (true)
+            {
+                Console.Write("   ");
+                var response = Console.ReadLine().Trim();
+
+                if (new List<string> { "1", "2"}.Contains(response))
+                {
+                    MainMenu();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("   We didn't understand your entry. " +
+                        "Please enter the number of the option " +
+                        "you wish to select:");
+                    Console.WriteLine();
+                }
+            }
         }
 
         static void ViewReadingList()
         {
-            foreach (var item in ReadingList)
+            Console.Clear();
+
+            if (ReadingList.Count == 0)
             {
-                Console.WriteLine($"   Title:      {item.Title}");
-                foreach (var author in item.Authors)
-                {
-                    Console.WriteLine($"   Author:     {author}");
-                }
-                Console.WriteLine($"   Publisher:  {item.Publisher}");
+                Console.WriteLine();
+                Console.WriteLine("   Your reading list has no books in it.");
                 Console.WriteLine();
             }
-            Console.WriteLine("Press any key to return to the main menu:");
+            else
+            {
+                foreach (var item in ReadingList)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"   Title:      {item.Title}");
+                    foreach (var author in item.Authors)
+                    {
+                        Console.WriteLine($"   Author:     {author}");
+                    }
+                    Console.WriteLine($"   Publisher:  {item.Publisher}");
+                    Console.WriteLine();
+                }
+            }
+
+            Console.WriteLine("   Press any key to return to the main menu:");
+            Console.WriteLine();
+            Console.Write("   ");
             Console.ReadLine();
             MainMenu();
         }
