@@ -121,10 +121,10 @@ namespace ReadingListMaker
                             BookSearchMenu();
                             break;
                         case "2":
-                            // Reading list display function here
+                            ViewReadingList();
                             break;
                         case "3":
-                            // Quit function here
+                            Environment.Exit(0);
                             break;
                     }
                     break;
@@ -216,7 +216,8 @@ namespace ReadingListMaker
                         .Contains(response))
                     {
                         SelectedBook = searchResult[int.Parse(response)];
-                        ParseUserChoice(response, "bookSearch");
+                        // ParseUserChoice(response, "bookSearch");
+                        AddToReadingList(SelectedBook);
                         break;
                     }
                     else
