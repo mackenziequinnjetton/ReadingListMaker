@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Google.Apis.Books;
+using Google.Apis.Books.v1;
+using Google.Apis.Services;
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
@@ -169,12 +170,19 @@ namespace ReadingListMaker
 
             apiURL += $"&projection=lite&maxResults=5&key={apiKey}";
 
+            /*var bookService = new IClientService();
+            var bookSearcher = new VolumesResource;*/
+
             WebRequest apiRequest = WebRequest.Create(apiURL);
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
             apiReader = new StreamReader(apiStream);
-            var result = JsonConvert.DeserializeObject<string>(apiReader.ReadToEnd());
+            var result = apiReader.ReadToEnd().Trim();
+            // result = JsonConvert.DeserializeObject<string>(result);
             JObject resultObject = JObject.Parse(result);
-            Console.WriteLine(resultObject);
+            // Console.WriteLine((string)resultObject["kind"]);
+
+            var resultCollection =
+                from
             
             /*var result = new List<string>();
             
