@@ -8,8 +8,15 @@ namespace ReadingListMaker
 {
     internal class Book
     {
-        string Title { get; set; }
-        string Author { get; set; }
-        string Publisher { get; set; }
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public string Publisher { get; set; }
+
+        public Book(string title, string author, string publisher)
+        {
+            Title = title;
+            Author = author;
+            Publisher = publisher;
+        }
     }
 }

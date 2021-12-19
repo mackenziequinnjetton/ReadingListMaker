@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace ReadingListMaker
 {
@@ -168,10 +169,7 @@ namespace ReadingListMaker
 
             apiURL = apiURL.Substring(0, apiURL.Length - 1);
 
-            apiURL += $"&projection=lite&maxResults=5&key={apiKey}";
-
-            /*var bookService = new IClientService();
-            var bookSearcher = new VolumesResource;*/
+            apiURL += $"&maxResults=5&key={apiKey}";
 
             WebRequest apiRequest = WebRequest.Create(apiURL);
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
@@ -182,8 +180,40 @@ namespace ReadingListMaker
             // Console.WriteLine((string)resultObject["kind"]);
 
             var resultCollection =
-                from
-            
+                /*from book in resultObject["items"]
+                    .SelectMany(elem => elem["volumeInfo"]).Values<string>()*/
+                // from bookInfo in resultObject["items"].Children()["volumeInfo"].Values<JToken>()
+                from bookInfo in resultObject["items"].Children<JToken>()["volumeInfo"]
+                    /*group bookInfo by bookInfo
+                    into booksInfo*/
+                    // from bookInfo in book["volumeInfo"]
+                    // select book;
+                /*select new Book(
+                    bookInfo["title"].ToString(), 
+                    bookInfo["authors"].ToString(), 
+                    bookInfo["publisher"].ToString()
+                );*/
+                select new 
+                { 
+                    Title = bookInfo["title"],
+                    Authors = bookInfo["authors"], 
+                    Publisher = bookInfo["publisher"] 
+                };
+
+            // Console.WriteLine(resultCollection);
+
+            Console.Clear();
+            foreach (var item in resultCollection)
+            {
+                Console.WriteLine($"   {item.Title}");
+                foreach (var author in item.Authors)
+                {
+                    Console.WriteLine($"   {author}");
+                }
+                Console.WriteLine($"   {item.Publisher}");
+                Console.WriteLine();
+            }
+
             /*var result = new List<string>();
             
             while (!apiReader.EndOfStream)
