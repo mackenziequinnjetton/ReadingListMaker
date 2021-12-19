@@ -130,9 +130,9 @@ namespace ReadingListMaker
             */
         }
 
-        static async Task<object> BookSearch(string searchQuery)
+        static async IEnumerable<Book> BookSearch(string searchQuery)
         {
-            Task <object> bookTitleQuery = Task.Run(
+            Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
 
             Console.WriteLine();
@@ -143,7 +143,7 @@ namespace ReadingListMaker
             return bookTitleQuery.Result;
         }
 
-        static object BookSearchHelper(string searchQuery)
+        static IEnumerable<Book> BookSearchHelper(string searchQuery)
         {
             var apiPath = 
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
