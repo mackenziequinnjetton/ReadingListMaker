@@ -132,7 +132,7 @@ namespace ReadingListMaker
 
         static async Task<object> BookSearch(string searchQuery)
         {
-            Task<object> bookTitleQuery = Task.Run(
+            Task <object> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
 
             Console.WriteLine();
@@ -175,32 +175,17 @@ namespace ReadingListMaker
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
             apiReader = new StreamReader(apiStream);
             var result = apiReader.ReadToEnd().Trim();
-            // result = JsonConvert.DeserializeObject<string>(result);
             JObject resultObject = JObject.Parse(result);
-            // Console.WriteLine((string)resultObject["kind"]);
 
             var resultCollection =
-                /*from book in resultObject["items"]
-                    .SelectMany(elem => elem["volumeInfo"]).Values<string>()*/
-                // from bookInfo in resultObject["items"].Children()["volumeInfo"].Values<JToken>()
                 from bookInfo in resultObject["items"].Children<JToken>()["volumeInfo"]
-                    /*group bookInfo by bookInfo
-                    into booksInfo*/
-                    // from bookInfo in book["volumeInfo"]
-                    // select book;
-                /*select new Book(
-                    bookInfo["title"].ToString(), 
-                    bookInfo["authors"].ToString(), 
-                    bookInfo["publisher"].ToString()
-                );*/
-                select new 
+                select new Book(bookInfo["title"], bookInfo["authors"], bookInfo["publisher"])
+                /*select new 
                 { 
                     Title = bookInfo["title"],
                     Authors = bookInfo["authors"], 
                     Publisher = bookInfo["publisher"] 
-                };
-
-            // Console.WriteLine(resultCollection);
+                };*/
 
             Console.Clear();
             foreach (var item in resultCollection)
@@ -214,32 +199,11 @@ namespace ReadingListMaker
                 Console.WriteLine();
             }
 
-            /*var result = new List<string>();
-            
-            while (!apiReader.EndOfStream)
-            {
-                var line = apiReader.ReadLine();
-                result.Add(line);
-            }*/
-
             apiRequest.Abort();
-            apiStream.Close();
-            apiReader.Close();
+            apiStream.Dispose();
+            apiReader.Dispose();
 
-            return result;
-
-            /*try
-            {
-                
-            }
-            catch 
-            {
-
-            }
-            finally
-            {
-                
-            }*/
+            return resultCollection;
         }
     }
 }

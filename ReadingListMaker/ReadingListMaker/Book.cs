@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace ReadingListMaker
 {
     internal class Book
     {
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Publisher { get; set; }
+        public JToken Title { get; set; }
+        public JToken Author { get; set; }
+        public JToken Publisher { get; set; }
 
-        public Book(string title, string author, string publisher)
+        public Book(JToken title, JToken author, JToken publisher)
         {
             Title = title;
             Author = author;
