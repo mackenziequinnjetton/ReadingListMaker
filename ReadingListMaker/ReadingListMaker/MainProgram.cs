@@ -68,6 +68,18 @@ namespace ReadingListMaker
                     // the console will be cleared first
                     MainMenuFirstCall = false;
                     ParseUserChoice(response, "mainMenu");
+
+                    if (response == "1")
+                    {
+                        Console.Clear();
+                        Console.WriteLine();
+                        Console.WriteLine("   Searching...");
+                        
+                        while (true)
+                        {
+                            Console.ReadLine();
+                        }
+                    }
                 }
                 else
                 {
@@ -125,7 +137,20 @@ namespace ReadingListMaker
             var searchQuery = Console.ReadLine().Trim().ToLower();
             Console.Clear();
             BookSearch(searchQuery);
-            
+        }
+
+        static async void BookSearch(string searchQuery)
+        {
+            Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
+                () => BookSearchHelper(searchQuery));
+
+            Console.WriteLine();
+            Console.Write("   ");
+
+            await bookTitleQuery;
+
+            SearchResult = bookTitleQuery.Result;
+
             Console.Clear();
             Console.WriteLine();
 
@@ -139,20 +164,6 @@ namespace ReadingListMaker
                 Console.WriteLine($"   {item.Publisher}");
                 Console.WriteLine();
             }
-        }
-
-        static async void BookSearch(string searchQuery)
-        {
-            Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
-                () => BookSearchHelper(searchQuery));
-
-            Console.WriteLine();
-            Console.Write("   ");
-
-            bookTitleQuery.Wait();
-            await bookTitleQuery;
-
-            SearchResult = bookTitleQuery.Result;
         }
 
         static IEnumerable<Book> BookSearchHelper(string searchQuery)
