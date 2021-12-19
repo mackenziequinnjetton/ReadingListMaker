@@ -178,8 +178,14 @@ namespace ReadingListMaker
             JObject resultObject = JObject.Parse(result);
 
             var resultCollection =
-                from bookInfo in resultObject["items"].Children<JToken>()["volumeInfo"]
-                select new Book(bookInfo["title"], bookInfo["authors"], bookInfo["publisher"])
+                from bookInfo in resultObject["items"]
+                    .Children<JToken>()["volumeInfo"]
+                select new Book
+                (
+                    bookInfo["title"], 
+                    bookInfo["authors"], 
+                    bookInfo["publisher"]
+                );
                 /*select new 
                 { 
                     Title = bookInfo["title"],
