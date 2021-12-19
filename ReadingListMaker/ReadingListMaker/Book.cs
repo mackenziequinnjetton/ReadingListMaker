@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReadingListMaker
 {
-    internal class BookCollection
+    internal class Book
     {
-        public Book[] items { get; set; }
+        string Title { get; set; }
+        string Author { get; set; }
+        string Publisher { get; set; }
     }
 }
