@@ -77,6 +77,9 @@ namespace ReadingListMaker
                         
                         while (true)
                         {
+                            Console.Clear();
+                            Console.WriteLine();
+                            Console.Write("   ");
                             Console.ReadLine();
                         }
                     }
