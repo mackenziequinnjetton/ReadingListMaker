@@ -157,14 +157,14 @@ namespace ReadingListMaker
 
         static IEnumerable<Book> BookSearchHelper(string searchQuery)
         {
-            var apiPath = 
+            var apiKeyPath = 
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
 
             string apiKey;
             StreamReader apiReader;
 
             using (FileStream apiFileStream = 
-                File.Open(apiPath, FileMode.Open))
+                File.Open(apiKeyPath, FileMode.Open))
             {
                 apiReader = new StreamReader(apiFileStream);
                 apiKey = apiReader.ReadToEnd();
