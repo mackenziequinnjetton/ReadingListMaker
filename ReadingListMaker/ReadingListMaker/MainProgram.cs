@@ -16,6 +16,7 @@ namespace ReadingListMaker
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
         // private static IEnumerable<Book> SearchResult { get; set; }
+        private static bool APIResponsePending { get; set; } = true;
 
         static void Main(string[] args)
         {
@@ -52,32 +53,25 @@ namespace ReadingListMaker
             }
 
             // Loops until the user inputs a valid menu selection
+            string response;
+            
             while (true)
             {
 
                 // Maintains margin with user prompt
                 Console.Write("   ");
-                var response = Console.ReadLine();
+                response = Console.ReadLine();
 
                 // Checks if the user selected a valid menu item
                 if (new List<string> { "1", "2", "3" }
                     .Contains(response.Trim()))
                 {
 
-                    // For future calls of MainMenu,
-                    // the console will be cleared first
-                    MainMenuFirstCall = false;
-                    ParseUserChoice(response, "mainMenu");
+                    break;
 
                     if (response == "1")
-                    {    
-                        while (true)
-                        {
-                            Console.Clear();
-                            Console.WriteLine();
-                            Console.Write("   Searching...");
-                            Console.ReadLine();
-                        }
+                    {
+                        
                     }
                 }
                 else
@@ -88,6 +82,18 @@ namespace ReadingListMaker
                         "you wish to select:");
                     Console.WriteLine();
                 }
+            }
+            // For future calls of MainMenu,
+            // the console will be cleared first
+            MainMenuFirstCall = false;
+            ParseUserChoice(response, "mainMenu");
+
+            while (APIResponsePending)
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Console.Write("   Searching...");
+                Console.ReadLine();
             }
         }
 
@@ -121,6 +127,28 @@ namespace ReadingListMaker
                             break;
                     }
                     break;
+                    
+                case "bookSearch":
+
+                    switch (response)
+                    {
+                        case "1":
+                            // Add book 1 to reading list
+                            Console.WriteLine(42);
+                            break;
+                        case "2":
+                            break;
+                        case "3":
+                            break;
+                        case "4":
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            MainMenu();
+                            break;
+                    }
+                    break;
             }
         }
 
@@ -138,15 +166,18 @@ namespace ReadingListMaker
             BookSearch(searchQuery);
         }
 
-        static async void BookSearch(string searchQuery)
+        static /*async*/ void BookSearch(string searchQuery)
         {
             Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
 
+            APIResponsePending = true;
+
             Console.WriteLine();
             Console.Write("   ");
 
-            await bookTitleQuery;
+            // await bookTitleQuery;
+            APIResponsePending = false;
 
             var searchResult = bookTitleQuery.Result;
 
@@ -166,16 +197,41 @@ namespace ReadingListMaker
                 Console.WriteLine();
             }
 
-            Console.WriteLine("Please select a result to add to reading list");
-            Console.WriteLine("(enter 1-5, or press ESC to return " +
+            Console.WriteLine("   Please select a result to add " +
+                "to reading list");
+            Console.WriteLine("   (enter 1-5, or enter 6 to return " +
                 "to the main menu): ");
             Console.WriteLine();
+            Console.Write("   ");
 
-            var responseKey = Console.ReadKey();
-
-            if (responseKey.Key == ConsoleKey.Escape)
+            while (true)
             {
-                MainMenu();
+                var response = Console.ReadLine().Trim();
+
+                if (new List<string> { "1", "2", "3", "4", "5", "6" }
+                    .Contains(response))
+                {
+                    if (new List<string> { "1", "2", "3", "4", "5" }
+                        .Contains(response))
+                    {
+                        
+                        ParseUserChoice(response, "bookSearch");
+                        break;
+                    }
+                    else
+                    {
+                        MainMenu();
+                        break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("   We didn't understand your entry. " +
+                        "Please enter the number of the option " +
+                        "you wish to select:");
+                    Console.WriteLine();
+                }
             }
         }
 
