@@ -67,13 +67,7 @@ namespace ReadingListMaker
                 if (new List<string> { "1", "2", "3" }
                     .Contains(response.Trim()))
                 {
-
                     break;
-
-                    if (response == "1")
-                    {
-                        
-                    }
                 }
                 else
                 {
