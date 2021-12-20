@@ -218,11 +218,16 @@ namespace ReadingListMaker
             Console.WriteLine("   (enter 1-5, or enter 6 to return " +
                 "to the main menu): ");
             Console.WriteLine();
-            Console.Write("   ");
 
             while (true)
             {
+                Console.Write("   ");
                 var response = Console.ReadLine().Trim();
+
+                /*if (response == null)
+                {
+                    Console.WriteLine("Gotcha");
+                }*/
 
                 if (new List<string> { "1", "2", "3", "4", "5", "6" }
                     .Contains(response))
