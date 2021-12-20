@@ -88,14 +88,6 @@ namespace ReadingListMaker
             // the console will be cleared first
             MainMenuFirstCall = false;
             ParseUserChoice(response, "mainMenu");
-
-            while (APIResponsePending)
-            {
-                Console.Clear();
-                Console.WriteLine();
-                Console.Write("   Searching...");
-                Console.ReadLine();
-            }
         }
 
         // Parses user menu input from anywhere in the program
@@ -176,6 +168,14 @@ namespace ReadingListMaker
 
             Console.WriteLine();
             Console.Write("   ");
+
+            while (APIResponsePending)
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Console.Write("   Searching...");
+                Console.ReadLine();
+            }
 
             // await bookTitleQuery;
             APIResponsePending = false;
