@@ -87,7 +87,28 @@ namespace ReadingListMaker
             // For future calls of MainMenu,
             // the console will be cleared first
             MainMenuFirstCall = false;
-            ParseUserChoice(response, "mainMenu");
+            // ParseUserChoice(response, "mainMenu");
+
+            switch (response)
+            {
+                case "1":
+                    BookSearchMenu();
+                    break;
+                case "2":
+                    ViewReadingList();
+                    break;
+                case "3":
+                    Environment.Exit(0);
+                    break;
+            }
+
+            while (APIResponsePending)
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Console.Write("   Searching...");
+                Console.ReadLine();
+            }
         }
 
         // Parses user menu input from anywhere in the program
@@ -159,7 +180,7 @@ namespace ReadingListMaker
             BookSearch(searchQuery);
         }
 
-        static /*async*/ void BookSearch(string searchQuery)
+        static async void BookSearch(string searchQuery)
         {
             Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
@@ -169,15 +190,9 @@ namespace ReadingListMaker
             Console.WriteLine();
             Console.Write("   ");
 
-            while (APIResponsePending)
-            {
-                Console.Clear();
-                Console.WriteLine();
-                Console.Write("   Searching...");
-                Console.ReadLine();
-            }
+            
 
-            // await bookTitleQuery;
+            await bookTitleQuery;
             APIResponsePending = false;
 
             var searchResult = bookTitleQuery.Result.ToArray();
@@ -306,7 +321,14 @@ namespace ReadingListMaker
 
                 if (new List<string> { "1", "2"}.Contains(response))
                 {
-                    MainMenu();
+                    if (response == "1")
+                    {
+                        BookSearchMenu();
+                    }
+                    else
+                    {
+                        MainMenu();
+                    }
                     break;
                 }
                 else
