@@ -87,7 +87,6 @@ namespace ReadingListMaker
             // For future calls of MainMenu,
             // the console will be cleared first
             MainMenuFirstCall = false;
-            // ParseUserChoice(response, "mainMenu");
 
             switch (response)
             {
@@ -108,61 +107,6 @@ namespace ReadingListMaker
                 Console.WriteLine();
                 Console.Write("   Searching...");
                 Console.ReadLine();
-            }
-        }
-
-        // Parses user menu input from anywhere in the program
-        // and calls the appropriate function
-        static void ParseUserChoice(string response, string menu)
-        {
-
-            // Note that before this function is called, user input
-            // will already have been validated by the calling function
-
-            // Outer switch function checks which menu the user's 
-            // input is from
-            switch (menu)
-            {
-                case "mainMenu":
-                    
-                    // Inner switch function checks which choice from that
-                    // menu the user selected and calls the
-                    // appropriate function
-                    switch (response)
-                    {
-                        case "1":
-                            BookSearchMenu();
-                            break;
-                        case "2":
-                            ViewReadingList();
-                            break;
-                        case "3":
-                            Environment.Exit(0);
-                            break;
-                    }
-                    break;
-                    
-                case "bookSearch":
-
-                    switch (response)
-                    {
-                        case "1":
-                            // Add book 1 to reading list
-                            Console.WriteLine(42);
-                            break;
-                        case "2":
-                            break;
-                        case "3":
-                            break;
-                        case "4":
-                            break;
-                        case "5":
-                            break;
-                        case "6":
-                            MainMenu();
-                            break;
-                    }
-                    break;
             }
         }
 
@@ -224,11 +168,6 @@ namespace ReadingListMaker
                 Console.Write("   ");
                 var response = Console.ReadLine().Trim();
 
-                /*if (response == null)
-                {
-                    Console.WriteLine("Gotcha");
-                }*/
-
                 if (new List<string> { "1", "2", "3", "4", "5", "6" }
                     .Contains(response))
                 {
@@ -236,7 +175,6 @@ namespace ReadingListMaker
                         .Contains(response))
                     {
                         SelectedBook = searchResult[int.Parse(response)];
-                        // ParseUserChoice(response, "bookSearch");
                         AddToReadingList(SelectedBook);
                         break;
                     }
