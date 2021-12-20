@@ -8,6 +8,7 @@ using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ReadingListMaker
 {
@@ -53,9 +54,9 @@ namespace ReadingListMaker
             Console.WriteLine("   3: Quit");
             Console.WriteLine();
 
-            // Loops until the user inputs a valid menu selection
             string response;
-            
+
+            // Loops until the user inputs a valid menu selection
             while (true)
             {
 
@@ -111,9 +112,29 @@ namespace ReadingListMaker
             Console.WriteLine();
             Console.WriteLine("   Please enter a book title:");
             Console.WriteLine();
-            Console.Write("   ");
 
-            var searchQuery = Console.ReadLine().Trim().ToLower();
+            string searchQuery;
+            
+            while (true)
+            {
+                Console.Write("   ");
+                searchQuery = Console.ReadLine().Trim().ToLower();
+
+                if (searchQuery == "" 
+                    || new Regex(@"^\s+$").Match(searchQuery).Success)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("   That is not a valid book title. " +
+                        "Please enter a book title:");
+                    Console.WriteLine();
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
             Console.Clear();
             BookSearch(searchQuery);
         }
@@ -127,8 +148,6 @@ namespace ReadingListMaker
 
             Console.WriteLine();
             Console.Write("   ");
-
-            
 
             await bookTitleQuery;
             APIResponsePending = false;
