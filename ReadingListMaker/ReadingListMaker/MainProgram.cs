@@ -16,7 +16,7 @@ namespace ReadingListMaker
     {
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
-        private static bool APIResponsePending { get; set; } = true;
+        private static bool APIResponsePending { get; set; }
         private static Book SelectedBook { get; set; }
         private static List<Book> ReadingList { get; set; } = new List<Book>();
 
@@ -59,7 +59,6 @@ namespace ReadingListMaker
             // Loops until the user inputs a valid menu selection
             while (true)
             {
-
                 // Maintains margin with user prompt
                 Console.Write("   ");
                 response = Console.ReadLine();
@@ -79,10 +78,13 @@ namespace ReadingListMaker
                     Console.WriteLine();
                 }
             }
+
             // For future calls of MainMenu,
             // the console will be cleared first
             MainMenuFirstCall = false;
 
+            // Calls the appropriate method depending on
+            // the user's selection
             switch (response)
             {
                 case "1":
@@ -96,15 +98,23 @@ namespace ReadingListMaker
                     break;
             }
 
+            // This is used during a later asynchronous API query
+            // in BookSearch() where control bounces back to MainMenu()
+            // until the API query returns. It displays a message while
+            // the query is still ongoing, and the while loop prevents the
+            // user from entering input and causing unexpected results
+            // in the program
             while (APIResponsePending)
             {
                 Console.Clear();
                 Console.WriteLine();
-                Console.Write("   Searching...");
+                Console.Write("   Searching... ");
                 Console.ReadLine();
             }
         }
 
+        // Displays a menu prompting the user to enter a book title to
+        // search for, and then calls BookSearch() to execute the search
         static void BookSearchMenu()
         {
             Console.Clear();
@@ -120,6 +130,8 @@ namespace ReadingListMaker
                 Console.Write("   ");
                 searchQuery = Console.ReadLine().Trim().ToLower();
 
+                // Checks to make sure the user did not enter an empty string
+                // or whitespace characters
                 if (searchQuery == "" 
                     || new Regex(@"^\s+$").Match(searchQuery).Success)
                 {
@@ -139,16 +151,26 @@ namespace ReadingListMaker
             BookSearch(searchQuery);
         }
 
+        // Carries out the search for the user's book by title, calling
+        // BookSearchHelper() to asynchronously query the Google Books API,
+        // then once the query returns, displays the search results and 
+        // prompts the user to select a book to add to their reading list
         static async void BookSearch(string searchQuery)
         {
+            // Calls BookSearchHelper to carry out the API query in a
+            // separate thread
             Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
                 () => BookSearchHelper(searchQuery));
 
+            // Used for the while loop at the end of MainMenu() which
+            // displays a message while the API query is ongoing
             APIResponsePending = true;
 
             Console.WriteLine();
             Console.Write("   ");
 
+            // Control bounces back to MainMenu(), after the switch
+            // statement on line 88
             await bookTitleQuery;
             APIResponsePending = false;
 
