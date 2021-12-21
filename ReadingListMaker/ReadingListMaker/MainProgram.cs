@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ReadingListMaker
 {
@@ -13,8 +12,6 @@ namespace ReadingListMaker
     {
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
-
-        private static bool APIResponsePending { get; set; }
         private static Book SelectedBook { get; set; }
 
         // Holds a temporary copy of the reading list. I judged serializing it
@@ -102,20 +99,6 @@ namespace ReadingListMaker
                     Environment.Exit(0);
                     break;
             }
-
-            // This is used during a later asynchronous API query
-            // in BookSearch() where control bounces back to MainMenu()
-            // until the API query returns. It displays a message while
-            // the query is still ongoing, and the while loop prevents the
-            // user from entering input and causing unexpected results
-            // in the program
-            while (APIResponsePending)
-            {
-                Console.Clear();
-                Console.WriteLine();
-                Console.Write("   Searching... ");
-                Console.ReadLine();
-            }
         }
 
         // Displays a menu prompting the user to enter a book title to
@@ -157,36 +140,25 @@ namespace ReadingListMaker
         }
 
         // Carries out the search for the user's book by title, calling
-        // BookSearchHelper() to asynchronously query the Google Books API,
+        // BookSearchHelper() to query the Google Books API,
         // then once the query returns, displays the search results and
         // prompts the user to select a book to add to their reading list
-        private static async void BookSearch(string searchQuery)
+        private static void BookSearch(string searchQuery)
         {
-            // Calls BookSearchHelper to carry out the API query in a
-            // separate thread
-            Task<IEnumerable<Book>> bookTitleQuery = Task.Run(
-                () => BookSearchHelper(searchQuery));
-
-            // Used for the while loop at the end of MainMenu() which
-            // displays a message while the API query is ongoing
-            APIResponsePending = true;
-
+            Book[] bookTitleQuery;
+            
+            Console.Clear();
             Console.WriteLine();
-            Console.Write("   ");
+            Console.Write("   Searching... ");
 
-            // Control bounces back to MainMenu(), after the switch
-            // statement on line 88
-            await bookTitleQuery;
-            APIResponsePending = false;
-
-            var searchResult = bookTitleQuery.Result.ToArray();
+            bookTitleQuery = BookSearchHelper(searchQuery);
 
             Console.Clear();
             Console.WriteLine();
-            Console.WriteLine("   Results:");
+            Console.WriteLine("   Results");
             Console.WriteLine();
 
-            foreach (var item in searchResult)
+            foreach (var item in bookTitleQuery)
             {
                 Console.WriteLine($"   Title:      {item.Title}");
                 if (item.Authors != null)
@@ -235,7 +207,7 @@ namespace ReadingListMaker
                     {
                         // Keeps track of the current book selected
                         // by the user, for use in AddToReadingList()
-                        SelectedBook = searchResult[int.Parse(response)];
+                        SelectedBook = bookTitleQuery[int.Parse(response)];
                         AddToReadingList(SelectedBook);
                         break;
                     }
@@ -256,13 +228,14 @@ namespace ReadingListMaker
             }
         }
 
-        // Asynchronously handles the Google Books API query
-        private static IEnumerable<Book> BookSearchHelper(string searchQuery)
+        // Handles the Google Books API query
+        private static Book[] BookSearchHelper(string searchQuery)
         {
             // API key is stored in a local file outside the repository
             // for security reasons. If this program is run on another
             // computer, this path will need to be changed to point to
             // a file containing the new user's API key
+            
             var apiKeyPath =
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
 
@@ -327,8 +300,8 @@ namespace ReadingListMaker
             apiStream.Dispose();
             apiReader.Dispose();
 
-            // Returns an IEnumerable<Book> containing search results
-            return resultCollection;
+            // Returns a Book[] containing search results
+            return resultCollection.ToArray();
         }
 
         private static void AddToReadingList(Book SelectedBook)
