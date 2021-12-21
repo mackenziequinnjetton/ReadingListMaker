@@ -373,7 +373,8 @@ namespace ReadingListMaker
                 }
             }
 
-            Console.WriteLine("   Press any key to return to the main menu:");
+            Console.WriteLine("   Enter any input and press enter" +
+                " to return to the main menu:");
             Console.WriteLine();
             Console.Write("   ");
             Console.ReadLine();
