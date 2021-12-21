@@ -186,11 +186,30 @@ namespace ReadingListMaker
             foreach (var item in searchResult)
             {
                 Console.WriteLine($"   Title:      {item.Title}");
-                foreach (var author in item.Authors)
+                if (item.Authors != null)
                 {
-                    Console.WriteLine($"   Author:     {author}");
+                    foreach (var author in item.Authors)
+                    {
+                        Console.WriteLine($"   Author:     {author}");
+                    }
                 }
-                Console.WriteLine($"   Publisher:  {item.Publisher}");
+
+                // Accounts for edge case where there is no author listed
+                else
+                {
+                    Console.WriteLine("   Author:     None listed");
+                }
+                if (item.Publisher != null)
+                {
+                    Console.WriteLine($"   Publisher:  {item.Publisher}");
+                }
+
+                // Accounts for edge case where there is no publisher listed
+                else
+                {
+                    Console.WriteLine($"   Publisher:  None listed");
+                }
+                
                 Console.WriteLine();
             }
 
