@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ReadingListMaker
 {
+    // Holds book information
     internal class Book
     {
         public JToken Title { get; set; }

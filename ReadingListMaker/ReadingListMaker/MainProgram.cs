@@ -18,7 +18,12 @@ namespace ReadingListMaker
         private static bool MainMenuFirstCall { get; set; } = true;
         private static bool APIResponsePending { get; set; }
         private static Book SelectedBook { get; set; }
-        private static List<Book> ReadingList { get; set; } = new List<Book>();
+
+        // Holds a temporary copy of the reading list. I judged serializing it
+        // to a file for permanent storage to be beyond the permitted
+        // scope of this project
+        private static List<Book> ReadingList { get; set; } = 
+            new List<Book>();
 
         static void Main(string[] args)
         {
@@ -209,6 +214,8 @@ namespace ReadingListMaker
                     if (new List<string> { "1", "2", "3", "4", "5" }
                         .Contains(response))
                     {
+                        // Keeps track of the current book selected 
+                        // by the user, for use in AddToReadingList()
                         SelectedBook = searchResult[int.Parse(response)];
                         AddToReadingList(SelectedBook);
                         break;
@@ -230,14 +237,20 @@ namespace ReadingListMaker
             }
         }
 
+        // Asynchronously handles the Google Books API query
         static IEnumerable<Book> BookSearchHelper(string searchQuery)
         {
+            // API key is stored in a local file outside the repository
+            // for security reasons. If this program is run on another 
+            // computer, this path will need to be changed to point to
+            // a file containing the new user's API key
             var apiKeyPath = 
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
 
             string apiKey;
             StreamReader apiReader;
 
+            // Reads the API key from the file
             using (FileStream apiFileStream = 
                 File.Open(apiKeyPath, FileMode.Open))
             {
@@ -245,26 +258,41 @@ namespace ReadingListMaker
                 apiKey = apiReader.ReadToEnd();
             }
 
+            // Splits the search query into individual words
             var searchQueryWords = searchQuery.Split(' ');
 
+            // Partial Google Books API URL, to which the search query and
+            // search options will be concatenated
             var apiURL = "https://www.googleapis.com/books/v1/volumes?q=";
 
+            // Appends each word of the search query, as well as a "+",
+            // to the API url
             foreach (var word in searchQueryWords)
             {
                 apiURL += $"{word}+";
             }
 
+            // Removes the final "+"
             apiURL = apiURL.Substring(0, apiURL.Length - 1);
+            
+            // Concatenates options that limit results to the first 5 and 
+            // include the API key
             apiURL += $"&maxResults=5&key={apiKey}";
 
+            // Queries the API url and retrieves the response as a stream
             WebRequest apiRequest = WebRequest.Create(apiURL);
             Stream apiStream = apiRequest.GetResponse().GetResponseStream();
 
+            // Reads the response from the API
             apiReader = new StreamReader(apiStream);
-
             var result = apiReader.ReadToEnd().Trim();
+
+            // Parses the API's response into a JSON.NET object
             JObject resultObject = JObject.Parse(result);
 
+            // Queries resultObject using LINQ to JSON
+            // (enabled by JSON.NET) and returns a Book object
+            // with the necessary information
             var resultCollection =
                 from bookInfo in resultObject["items"]
                     .Children<JToken>()["volumeInfo"]
@@ -275,10 +303,12 @@ namespace ReadingListMaker
                     bookInfo["publisher"]
                 );
 
+            // Releases system resources
             apiRequest.Abort();
             apiStream.Dispose();
             apiReader.Dispose();
 
+            // Returns an IEnumerable<Book> containing search results
             return resultCollection;
         }
 
@@ -297,7 +327,7 @@ namespace ReadingListMaker
                 Console.Write("   ");
                 var response = Console.ReadLine().Trim();
 
-                if (new List<string> { "1", "2"}.Contains(response))
+                if (new List<string> { "1", "2" }.Contains(response))
                 {
                     if (response == "1")
                     {
@@ -332,6 +362,7 @@ namespace ReadingListMaker
             }
             else
             {
+                // Prints reading list contents
                 foreach (var item in ReadingList)
                 {
                     Console.WriteLine();
