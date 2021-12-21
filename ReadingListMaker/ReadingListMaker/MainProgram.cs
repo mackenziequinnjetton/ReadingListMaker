@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.IO;
-using System.Net;
-using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ReadingListMaker
 {
@@ -13,16 +13,17 @@ namespace ReadingListMaker
     {
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
+
         private static bool APIResponsePending { get; set; }
         private static Book SelectedBook { get; set; }
 
         // Holds a temporary copy of the reading list. I judged serializing it
         // to a file for permanent storage to be beyond the permitted
         // scope of this project
-        private static List<Book> ReadingList { get; set; } = 
+        private static List<Book> ReadingList { get; set; } =
             new List<Book>();
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             IntroText();
             MainMenu();
@@ -30,7 +31,7 @@ namespace ReadingListMaker
 
         // Prints an introductory message informing the user of the
         // program's function and how to enter input
-        static void IntroText()
+        private static void IntroText()
         {
             Console.WriteLine();
             Console.WriteLine($"   Welcome! This program searches for " +
@@ -42,7 +43,7 @@ namespace ReadingListMaker
 
         // Prints a main menu, asks the user to select a choice,
         // and checks if their choice is one of the menu options
-        static void MainMenu()
+        private static void MainMenu()
         {
             // If it is not the first call of MainMenu(), clear the console
             if (!MainMenuFirstCall)
@@ -92,9 +93,11 @@ namespace ReadingListMaker
                 case "1":
                     BookSearchMenu();
                     break;
+
                 case "2":
                     ViewReadingList();
                     break;
+
                 case "3":
                     Environment.Exit(0);
                     break;
@@ -117,7 +120,7 @@ namespace ReadingListMaker
 
         // Displays a menu prompting the user to enter a book title to
         // search for, and then calls BookSearch() to execute the search
-        static void BookSearchMenu()
+        private static void BookSearchMenu()
         {
             Console.Clear();
 
@@ -126,7 +129,7 @@ namespace ReadingListMaker
             Console.WriteLine();
 
             string searchQuery;
-            
+
             while (true)
             {
                 Console.Write("   ");
@@ -134,7 +137,7 @@ namespace ReadingListMaker
 
                 // Checks to make sure the user did not enter an empty string
                 // or whitespace characters
-                if (searchQuery == "" 
+                if (searchQuery == ""
                     || new Regex(@"^\s+$").Match(searchQuery).Success)
                 {
                     Console.WriteLine();
@@ -155,9 +158,9 @@ namespace ReadingListMaker
 
         // Carries out the search for the user's book by title, calling
         // BookSearchHelper() to asynchronously query the Google Books API,
-        // then once the query returns, displays the search results and 
+        // then once the query returns, displays the search results and
         // prompts the user to select a book to add to their reading list
-        static async void BookSearch(string searchQuery)
+        private static async void BookSearch(string searchQuery)
         {
             // Calls BookSearchHelper to carry out the API query in a
             // separate thread
@@ -209,7 +212,7 @@ namespace ReadingListMaker
                 {
                     Console.WriteLine($"   Publisher:  None listed");
                 }
-                
+
                 Console.WriteLine();
             }
 
@@ -230,7 +233,7 @@ namespace ReadingListMaker
                     if (new List<string> { "1", "2", "3", "4", "5" }
                         .Contains(response))
                     {
-                        // Keeps track of the current book selected 
+                        // Keeps track of the current book selected
                         // by the user, for use in AddToReadingList()
                         SelectedBook = searchResult[int.Parse(response)];
                         AddToReadingList(SelectedBook);
@@ -254,20 +257,20 @@ namespace ReadingListMaker
         }
 
         // Asynchronously handles the Google Books API query
-        static IEnumerable<Book> BookSearchHelper(string searchQuery)
+        private static IEnumerable<Book> BookSearchHelper(string searchQuery)
         {
             // API key is stored in a local file outside the repository
-            // for security reasons. If this program is run on another 
+            // for security reasons. If this program is run on another
             // computer, this path will need to be changed to point to
             // a file containing the new user's API key
-            var apiKeyPath = 
+            var apiKeyPath =
                 @"C:\Users\macke\OneDrive\Documents\googleBooksAPIKey.txt";
 
             string apiKey;
             StreamReader apiReader;
 
             // Reads the API key from the file
-            using (FileStream apiFileStream = 
+            using (FileStream apiFileStream =
                 File.Open(apiKeyPath, FileMode.Open))
             {
                 apiReader = new StreamReader(apiFileStream);
@@ -290,8 +293,8 @@ namespace ReadingListMaker
 
             // Removes the final "+"
             apiURL = apiURL.Substring(0, apiURL.Length - 1);
-            
-            // Concatenates options that limit results to the first 5 and 
+
+            // Concatenates options that limit results to the first 5 and
             // include the API key
             apiURL += $"&maxResults=5&key={apiKey}";
 
@@ -314,8 +317,8 @@ namespace ReadingListMaker
                     .Children<JToken>()["volumeInfo"]
                 select new Book
                 (
-                    bookInfo["title"], 
-                    bookInfo["authors"], 
+                    bookInfo["title"],
+                    bookInfo["authors"],
                     bookInfo["publisher"]
                 );
 
@@ -328,8 +331,8 @@ namespace ReadingListMaker
             return resultCollection;
         }
 
-        static void AddToReadingList(Book SelectedBook)
-        { 
+        private static void AddToReadingList(Book SelectedBook)
+        {
             ReadingList.Add(SelectedBook);
 
             Console.Clear();
@@ -337,7 +340,7 @@ namespace ReadingListMaker
             Console.WriteLine("   Would you like to search for another " +
                 "book? (Enter 1 for yes, 2 for no):");
             Console.WriteLine();
-            
+
             while (true)
             {
                 Console.Write("   ");
@@ -366,7 +369,7 @@ namespace ReadingListMaker
             }
         }
 
-        static void ViewReadingList()
+        private static void ViewReadingList()
         {
             Console.Clear();
 
