@@ -207,7 +207,7 @@ namespace ReadingListMaker
                     {
                         // Keeps track of the current book selected
                         // by the user, for use in AddToReadingList()
-                        SelectedBook = bookTitleQuery[int.Parse(response)];
+                        SelectedBook = bookTitleQuery[int.Parse(response) - 1];
                         AddToReadingList(SelectedBook);
                         break;
                     }
