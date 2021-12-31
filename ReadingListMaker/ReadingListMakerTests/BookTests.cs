@@ -9,13 +9,10 @@ namespace ReadingListMakerTests
         [TestMethod]
         public void Book_ShouldCreateNewBook()
         {
-            // Arrange
             var searchQuery = "dune";
 
-            // Act
             var result = MainProgram.BookSearchHelper(searchQuery);
 
-            // Assert
             Assert.IsInstanceOfType(result, typeof(Book[]),
                 "Did not successfully create a Book");
         }
