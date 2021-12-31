@@ -16,7 +16,7 @@ namespace ReadingListMakerTests
             // Arrange
             var searchQuery = "dune";
 
-            // API key is stored in a local file outside the repository
+            /*// API key is stored in a local file outside the repository
             // for security reasons. If this program is run on another
             // computer, this path will need to be changed to point to
             // a file containing the new user's API key
@@ -66,6 +66,8 @@ namespace ReadingListMakerTests
             // Parses the API's response into a JSON.NET object
             JObject resultObject = JObject.Parse(result);
 
+            // Act
+            
             // Queries resultObject using LINQ to JSON
             // (enabled by JSON.NET) and returns a Book object
             // with the necessary information
@@ -77,7 +79,14 @@ namespace ReadingListMakerTests
                     bookInfo["title"],
                     bookInfo["authors"],
                     bookInfo["publisher"]
-                );
+                );*/
+
+            // Act
+            var result = MainProgram
+
+            // Assert
+            Assert.IsInstanceOfType(resultCollection, typeof(Book),
+                "Did not successfully create a Book");
         }
     }
 }

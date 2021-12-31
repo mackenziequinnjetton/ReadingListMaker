@@ -28,7 +28,7 @@ namespace ReadingListMaker
 
         // Prints an introductory message informing the user of the
         // program's function and how to enter input
-        private static void IntroText()
+        public static void IntroText()
         {
             Console.WriteLine();
             Console.WriteLine($"   Welcome! This program searches for " +
@@ -40,7 +40,7 @@ namespace ReadingListMaker
 
         // Prints a main menu, asks the user to select a choice,
         // and checks if their choice is one of the menu options
-        private static void MainMenu()
+        public static void MainMenu()
         {
             // If it is not the first call of MainMenu(), clear the console
             if (!MainMenuFirstCall)
@@ -103,7 +103,7 @@ namespace ReadingListMaker
 
         // Displays a menu prompting the user to enter a book title to
         // search for, and then calls BookSearch() to execute the search
-        private static void BookSearchMenu()
+        public static void BookSearchMenu()
         {
             Console.Clear();
 
@@ -143,7 +143,7 @@ namespace ReadingListMaker
         // BookSearchHelper() to query the Google Books API,
         // then once the query returns, displays the search results and
         // prompts the user to select a book to add to their reading list
-        private static void BookSearch(string searchQuery)
+        public static void BookSearch(string searchQuery)
         {
             Book[] bookTitleQuery;
             
@@ -229,7 +229,7 @@ namespace ReadingListMaker
         }
 
         // Handles the Google Books API query
-        private static Book[] BookSearchHelper(string searchQuery)
+        public static Book[] BookSearchHelper(string searchQuery)
         {
             // API key is stored in a local file outside the repository
             // for security reasons. If this program is run on another
@@ -304,7 +304,7 @@ namespace ReadingListMaker
             return resultCollection.ToArray();
         }
 
-        private static void AddToReadingList(Book SelectedBook)
+        public static void AddToReadingList(Book SelectedBook)
         {
             ReadingList.Add(SelectedBook);
 
@@ -342,7 +342,7 @@ namespace ReadingListMaker
             }
         }
 
-        private static void ViewReadingList()
+        public static void ViewReadingList()
         {
             Console.Clear();
 
