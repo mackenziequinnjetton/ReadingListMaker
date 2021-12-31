@@ -10,8 +10,6 @@ namespace ReadingListMaker
 {
     public class MainProgram
     {
-        // Indicates whether it is the first time MainMenu() has been called
-        private static bool MainMenuFirstCall { get; set; } = true;
         private static Book SelectedBook { get; set; }
 
         // Holds a temporary copy of the reading list. I judged serializing it
@@ -22,6 +20,8 @@ namespace ReadingListMaker
 
         // Below properties are for testing purposes
         public static bool TestingMainMenuOption1 { get; set; }
+        public static bool TestingMainMenuOption2 { get; set; }
+        public static bool TestingMainMenuOption3 { get; set; }
 
         private static void Main(string[] args)
         {
@@ -45,12 +45,6 @@ namespace ReadingListMaker
         // and checks if their choice is one of the menu options
         public static string MainMenu(TextReader reader)
         {
-            // If it is not the first call of MainMenu(), clear the console
-            if (!MainMenuFirstCall)
-            {
-                Console.Clear();
-            }
-
             Console.WriteLine();
             Console.WriteLine("   1: Look up a book by title");
             Console.WriteLine("   2: View your current reading list");
@@ -82,40 +76,49 @@ namespace ReadingListMaker
                 }
             }
 
-            // For future calls of MainMenu,
-            // the console will be cleared first
-            MainMenuFirstCall = false;
+            // Used for testing MainMenu() options
+            string testingResult = string.Empty;
             
             // Calls the appropriate method depending on
             // the user's selection
             switch (response)
             {
                 case "1":
-
-                    // Tests that option 1 worked
-                    if (TestingMainMenuOption1)
-                    {
-                        return "Option 1 worked";
-                    }
-                    BookSearchMenu();
+                    testingResult = BookSearchMenu();
                     break;
 
                 case "2":
-                    ViewReadingList();
+                    testingResult = ViewReadingList();
                     break;
 
                 case "3":
-                    Environment.Exit(0);
-                    break;
+
+                    // Tests that MainMenu() option 3 worked
+                    if (TestingMainMenuOption3)
+                    {
+                        testingResult = "Option 3 worked";
+                        break;
+                    }
+                    else
+                    {
+                        Environment.Exit(0);
+                        break;
+                    }
             }
 
-            return "No options worked";
+            return testingResult;
         }
 
         // Displays a menu prompting the user to enter a book title to
         // search for, and then calls BookSearch() to execute the search
-        public static void BookSearchMenu()
+        public static string BookSearchMenu()
         {
+            // Tests that MainMenu() option 1 worked
+            if (TestingMainMenuOption1)
+            {
+                return "Option 1 worked";
+            }
+
             Console.Clear();
 
             Console.WriteLine();
@@ -148,6 +151,9 @@ namespace ReadingListMaker
 
             Console.Clear();
             BookSearch(searchQuery);
+
+            // Used for testing MainMenu() options
+            return string.Empty;
         }
 
         // Carries out the search for the user's book by title, calling
@@ -224,6 +230,7 @@ namespace ReadingListMaker
                     }
                     else
                     {
+                        Console.Clear();
                         MainMenu(Console.In);
                         break;
                     }
@@ -338,6 +345,7 @@ namespace ReadingListMaker
                     }
                     else
                     {
+                        Console.Clear();
                         MainMenu(Console.In);
                     }
                     break;
@@ -353,8 +361,14 @@ namespace ReadingListMaker
             }
         }
 
-        public static void ViewReadingList()
+        public static string ViewReadingList()
         {
+            // Tests that MainMenu() option 2 works
+            if (TestingMainMenuOption2)
+            {
+                return "Option 2 worked";
+            }
+            
             Console.Clear();
 
             if (ReadingList.Count == 0)
@@ -383,7 +397,11 @@ namespace ReadingListMaker
             Console.WriteLine();
             Console.Write("   ");
             Console.ReadLine();
+            Console.Clear();
             MainMenu(Console.In);
+
+            // Used for testing MainMenu() options
+            return string.Empty;
         }
     }
 }
