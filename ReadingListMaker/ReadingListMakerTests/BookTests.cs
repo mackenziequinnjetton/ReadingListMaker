@@ -1,8 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Net;
-using System.Linq;
 using ReadingListMaker;
 
 namespace ReadingListMakerTests

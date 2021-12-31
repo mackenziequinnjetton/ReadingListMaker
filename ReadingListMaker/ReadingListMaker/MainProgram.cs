@@ -20,10 +20,13 @@ namespace ReadingListMaker
         private static List<Book> ReadingList { get; set; } =
             new List<Book>();
 
+        // Below properties are for testing purposes
+        public static bool TestingMainMenuOption1 { get; set; }
+
         private static void Main(string[] args)
         {
             IntroText();
-            MainMenu();
+            MainMenu(Console.In);
         }
 
         // Prints an introductory message informing the user of the
@@ -40,7 +43,7 @@ namespace ReadingListMaker
 
         // Prints a main menu, asks the user to select a choice,
         // and checks if their choice is one of the menu options
-        public static void MainMenu()
+        public static string MainMenu(TextReader reader)
         {
             // If it is not the first call of MainMenu(), clear the console
             if (!MainMenuFirstCall)
@@ -61,7 +64,7 @@ namespace ReadingListMaker
             {
                 // Maintains margin with user prompt
                 Console.Write("   ");
-                response = Console.ReadLine();
+                response = reader.ReadLine();
 
                 // Checks if the user selected a valid menu item
                 if (new List<string> { "1", "2", "3" }
@@ -82,12 +85,18 @@ namespace ReadingListMaker
             // For future calls of MainMenu,
             // the console will be cleared first
             MainMenuFirstCall = false;
-
+            
             // Calls the appropriate method depending on
             // the user's selection
             switch (response)
             {
                 case "1":
+
+                    // Tests that option 1 worked
+                    if (TestingMainMenuOption1)
+                    {
+                        return "Option 1 worked";
+                    }
                     BookSearchMenu();
                     break;
 
@@ -99,6 +108,8 @@ namespace ReadingListMaker
                     Environment.Exit(0);
                     break;
             }
+
+            return "No options worked";
         }
 
         // Displays a menu prompting the user to enter a book title to
@@ -213,7 +224,7 @@ namespace ReadingListMaker
                     }
                     else
                     {
-                        MainMenu();
+                        MainMenu(Console.In);
                         break;
                     }
                 }
@@ -327,7 +338,7 @@ namespace ReadingListMaker
                     }
                     else
                     {
-                        MainMenu();
+                        MainMenu(Console.In);
                     }
                     break;
                 }
@@ -372,7 +383,7 @@ namespace ReadingListMaker
             Console.WriteLine();
             Console.Write("   ");
             Console.ReadLine();
-            MainMenu();
+            MainMenu(Console.In);
         }
     }
 }
