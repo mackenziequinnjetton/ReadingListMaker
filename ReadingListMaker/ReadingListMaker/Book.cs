@@ -3,7 +3,7 @@
 namespace ReadingListMaker
 {
     // Holds book information
-    internal class Book
+    public class Book
     {
         public JToken Title { get; set; }
         public JToken Authors { get; set; }

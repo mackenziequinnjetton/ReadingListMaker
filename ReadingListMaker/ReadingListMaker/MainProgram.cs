@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace ReadingListMaker
 {
-    internal class MainProgram
+    public class MainProgram
     {
         // Indicates whether it is the first time MainMenu() has been called
         private static bool MainMenuFirstCall { get; set; } = true;
