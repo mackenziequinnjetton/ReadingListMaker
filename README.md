@@ -8,7 +8,7 @@ INSTALLATION
 
 Clone the repository to your local machine by running: 
 
-git clone https://github.com/mackenziequinnjetton/ReadingListMaker.git
+```git clone https://github.com/mackenziequinnjetton/ReadingListMaker.git```
 
 Alternatively, you may clone the repository using GitHub's desktop client or Visual Studio.
 
@@ -16,15 +16,15 @@ RUNNING
 
 I recommend opening ReadingListMaker.sln in Visual Studio and first building the solution and then running it from there, using the tools in the GUI. Alternatively, you may navigate to the local repository's directory containing the solution and type:
 
-dotnet build .\ReadingListMaker.sln
-cd .\ReadingListMaker\
-dotnet run .\MainProgram.cs
+```dotnet build .\ReadingListMaker.sln```
+```cd .\ReadingListMaker\```
+```dotnet run .\MainProgram.cs```
 
 TESTING
 
 Again, I recommend using Visual Studio built-in testing capabilities to run the tests specified in ReadingListMakerTests. Alternatively, you may navigate to the local repository's folder containing the solution and type:
 
-dotnet test .\ReadingListMaker.sln
+```dotnet test .\ReadingListMaker.sln```
 
 NOTES
 
