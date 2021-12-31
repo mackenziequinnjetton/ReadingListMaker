@@ -17,7 +17,9 @@ RUNNING
 I recommend opening ReadingListMaker.sln in Visual Studio and first building the solution and then running it from there, using the tools in the GUI. Alternatively, you may navigate to the local repository's directory containing the solution and type:
 
 ```dotnet build .\ReadingListMaker.sln```
+
 ```cd .\ReadingListMaker\```
+
 ```dotnet run .\MainProgram.cs```
 
 TESTING
